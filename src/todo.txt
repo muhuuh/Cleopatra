@@ -1,0 +1,5 @@
+- looking into routing with variable quotes and url/detailpages with the variable quotes
+    -> mainlandingpage, click on item overview to get to the detailpage of that list
+
+- do user authentication
+-add filtering logic in recommended list overview (add usestate to find what user has checked and add it to the filter() logic)
