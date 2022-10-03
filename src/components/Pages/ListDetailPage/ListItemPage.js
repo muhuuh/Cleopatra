@@ -2,11 +2,17 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { itemActions } from "../../store/item-slice";
 
-const ListItem = (props) => {
+const ListItemPage = (props) => {
+  const dispatch = useDispatch();
+
+
 
   const onRemove = () => {
-    props.onRemove(props.id);
-  }
+    dispatch(itemActions.deleteItem(props.id));
+    console.log("remove")
+  };
+  
+    
 
   return (
     <div className="flex flex-row justify-between border-2 rounded-md shadow-lg h-24">
@@ -20,4 +26,4 @@ const ListItem = (props) => {
   );
 };
 
-export default ListItem;
+export default ListItemPage;

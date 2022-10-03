@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useModal from "../../../hooks/use-modal";
-import { itemActions } from "../../store/item-slice";
 import { listActions } from "../../store/list-slice";
 import CreateItem from "./CreateItem";
 import CreateListInput from "./CreateListInput";
@@ -51,11 +50,11 @@ const CreateList = () => {
     onCloseCreateListHandler();
   };
 
-  const onRemoveItemHandler = (id) => {
-    console.log("remove id")
-    console.log(id)
-    dispatch(itemActions.deleteItem(id));
-  }
+  const onRemoveHandler = (id) => {
+    let updateditems = listItems;
+    updateditems = updateditems.filter(item => item.id !== id);
+    setlistItems(updateditems);
+  };
 
   const currentlistItems = listItems.map((item) => (
     <ListItem
@@ -63,14 +62,14 @@ const CreateList = () => {
       id={item.id}
       name={item.name}
       description={item.description}
-      onRemove={onRemoveItemHandler}
+      onRemove={onRemoveHandler}
     />
   ));
 
   const onSaveListHandler = () => {
     //add items id in it
     const itemsIdList = [];
-    const itemsId = listItems.map((list) => itemsIdList.push(list.id));
+    listItems.map((list) => itemsIdList.push(list.id));
 
     //newListItems.map(item => item.lists.push("test"));
     //listItems.map(item => item.lists.push(listAttributes.id));

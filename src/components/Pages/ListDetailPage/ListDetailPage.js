@@ -1,19 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import ListItem from "../NewList/ListItem";
+import ListItemPage from "./ListItemPage";
 
 const ListDetailPage = () => {
   const params = useParams();
   const listsStore = useSelector((state) => state.lists);
   const itemsStore = useSelector((state) => state.items);
 
-  console.log("list store")
-  console.log(listsStore.lists)
   
   const currentId = params.listId;
-  console.log("current id")
-  console.log(currentId)
   const existingList = listsStore.lists.find((list) => list.id === currentId);
 
   const itemsInList = itemsStore.items.filter((item) =>
@@ -21,11 +17,11 @@ const ListDetailPage = () => {
   );
 
   const listOfItems = itemsInList.map((item) => (
-    <ListItem
+    <ListItemPage
       key={item.id}
       id={item.id}
       name={item.name}
-      shortDescription={item.shortDescription}
+      description={item.description}
     />
   ));
 
