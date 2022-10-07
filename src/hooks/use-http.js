@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useReducer } from "react";
 
 const defaultState = {
   status: "null",
@@ -40,10 +40,12 @@ const UseHttp = () => {
       });
 
       if (!response.ok) {
+        console.log("error")
         throw new Error("Request failed!");
       }
 
       const data = await response.json();
+      console.log(data)
       applyData(data);
     } catch (err) {
       dispatchHttp({

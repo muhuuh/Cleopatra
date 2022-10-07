@@ -6,8 +6,10 @@ import { listActions } from "../../store/list-slice";
 const ListSummary = (props) => {
   const dispatch = useDispatch();
   
+  
   const onRemoveHandler = () => {
     dispatch(listActions.deleteList(props.id));
+    //props.onRemove();
   };
 
   return (

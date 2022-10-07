@@ -10,6 +10,7 @@ import MyProfil from "./components/Pages/MyProfil";
 import Signing from "./components/Pages/SignIn/Signing";
 import Login from "./components/Pages/SignIn/Login";
 import NotFound from "./components/Pages/NotFound";
+import Test from "./components/Pages/Test";
 
 const App = () => {
   return (
@@ -45,6 +46,9 @@ const App = () => {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/test">
+          <Test />
         </Route>
         <Route path="*">
           <NotFound />

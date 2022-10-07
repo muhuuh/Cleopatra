@@ -1,15 +1,19 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useModal from "../../../hooks/use-modal";
 import { listActions } from "../../store/list-slice";
 import CreateItem from "./CreateItem";
 import CreateListInput from "./CreateListInput";
 import ListItem from "./ListItem";
+import useHttp from "../../../hooks/use-http";
+import { itemActions } from "../../store/item-slice";
 
 const CreateList = () => {
+  const { isLoading, error, sendRequest: postLists } = useHttp();
+  const listsStore = useSelector((state) => state.lists);
   const {
     isVisible: isCreateItemVisible,
     onCloseHandler: onCloseCreateItemHandler,
@@ -52,7 +56,7 @@ const CreateList = () => {
 
   const onRemoveHandler = (id) => {
     let updateditems = listItems;
-    updateditems = updateditems.filter(item => item.id !== id);
+    updateditems = updateditems.filter((item) => item.id !== id);
     setlistItems(updateditems);
   };
 
@@ -71,12 +75,6 @@ const CreateList = () => {
     const itemsIdList = [];
     listItems.map((list) => itemsIdList.push(list.id));
 
-    //newListItems.map(item => item.lists.push("test"));
-    //listItems.map(item => item.lists.push(listAttributes.id));
-    //listItems.map(item => console.log(item.name));
-    //console.log("list items")
-    
-
     const createlistAttributes = {
       id: listAttributes.id,
       name: listAttributes.name,
@@ -87,16 +85,32 @@ const CreateList = () => {
       shortDescription: listAttributes.shortDescription,
       description: listAttributes.description,
     };
-
-    console.log(createlistAttributes)
-
+    console.log("list attributes");
+    console.log(createlistAttributes);
+    console.log("item id");
+    console.log(itemsIdList);
+    console.log("new item")
+    console.log(listItems);
     dispatch(listActions.addList(createlistAttributes));
+    dispatch(itemActions.createItem(listItems));
+
+    const postConfig = {
+      url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: { lists: createlistAttributes, items: listItems },
+    };
+
+    const transformDataPost = (data) => {
+      const generatedId = data.name; // firebase-specific => "name" contains generated id
+      const createdTask = { id: generatedId, text: listsStore.lists };
+    };
+
+    postLists(postConfig, transformDataPost);
 
     //const url = `/lists/detailpage/${listAttributes.id}`;
-    const url = "/main_landing_page";
-    history.push(url);
+    //history.push("/main_landing_page");
   };
-
   return (
     <div>
       <div className="text-2xl font-bold mb-16">Create a List</div>
@@ -123,7 +137,9 @@ const CreateList = () => {
         <div>description: {listAttributes.description}</div>
       </div>
       <div className="flex justify-center">
-        <div className="flex flex-col gap-y-4 mt-20 w-2/3">{currentlistItems}</div>
+        <div className="flex flex-col gap-y-4 mt-20 w-2/3">
+          {currentlistItems}
+        </div>
       </div>
       <div className="flex flex-row justify-around mt-20">
         <div className="">

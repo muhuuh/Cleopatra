@@ -69,8 +69,11 @@ const DUMMY_LISTS = [
   },
 ];
 
+
 const defaultState = {
-  lists: DUMMY_LISTS,
+  //lists: DUMMY_LISTS,
+  lists: [],
+  other_list: [],
   totalLists: 0,
 };
 
@@ -92,17 +95,22 @@ const listSlice = createSlice({
           users: newList.users,
           shortDescription: newList.shortDescription,
           description: newList.description,
-        },
-        );
-        console.log("new list pushed")
+        });
+        console.log("new list pushed");
+        console.log("all lists")
+        console.log(state.lists);
       } else {
         console.log("list already exists");
       }
     },
+    fetchList(state, action) {
+      const fetchedList = action.payload;
+      let existingList = state.other_list.concat(fetchedList);
+      state.lists = existingList;
+    },
     deleteList(state, action) {
       const id = action.payload;
       const remainingLists = state.lists.filter((list) => list.id !== id);
-
       state.lists = remainingLists;
     },
   },

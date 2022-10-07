@@ -62,6 +62,7 @@ const itemSlice = createSlice({
   initialState: defaultState,
   reducers: {
     createItem(state, action) {
+      console.log("itemsstore")
       const newItem = action.payload;
       state.items.push({
         id: newItem.id,
@@ -71,6 +72,8 @@ const itemSlice = createSlice({
         description: newItem.description,
         lists: newItem.lists,
       });
+      console.log("itemstore")
+      console.log(state.items)
     },
     deleteItem(state, action) {
       const id = action.payload;
