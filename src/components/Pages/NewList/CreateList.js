@@ -10,10 +10,14 @@ import CreateListInput from "./CreateListInput";
 import ListItem from "./ListItem";
 import useHttp from "../../../hooks/use-http";
 import { itemActions } from "../../store/item-slice";
+import SuccessCreated from "./SuccessCreated";
 
 const CreateList = () => {
-  const { isLoading, error, sendRequest: postLists } = useHttp();
+  const { httpState, sendRequest: postLists } = useHttp();
   const listsStore = useSelector((state) => state.lists);
+  //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+
   const {
     isVisible: isCreateItemVisible,
     onCloseHandler: onCloseCreateItemHandler,
@@ -77,25 +81,31 @@ const CreateList = () => {
 
     const createlistAttributes = {
       id: listAttributes.id,
-      name: listAttributes.name,
+      title: listAttributes.name,
       category: listAttributes.category,
-      owner: "add user id from cookie",
+      creator: "add user id from cookie",
       items: itemsIdList,
       users: [],
-      shortDescription: listAttributes.shortDescription,
-      description: listAttributes.description,
+      description: listAttributes.shortDescription,
+      notes: listAttributes.description,
+      has_collaborators: "add has_collaborators",
+      is_public: "add is_public",
+      list_image: "add list_image",
+      creation_date: "add creation_date",
+      last_modification_date: "last_modification_date",
     };
+
     console.log("list attributes");
     console.log(createlistAttributes);
     console.log("item id");
     console.log(itemsIdList);
-    console.log("new item")
+    console.log("new item");
     console.log(listItems);
     dispatch(listActions.addList(createlistAttributes));
     dispatch(itemActions.createItem(listItems));
 
     const postConfig = {
-      url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
+      url: url,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: { lists: createlistAttributes, items: listItems },
@@ -161,6 +171,9 @@ const CreateList = () => {
             Save List
           </button>
         </div>
+      </div>
+      <div className="mt-12">
+        {httpState.status === "success" && <SuccessCreated />}
       </div>
     </div>
   );
