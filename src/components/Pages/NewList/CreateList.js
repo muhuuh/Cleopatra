@@ -31,6 +31,7 @@ const CreateList = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [listItems, setlistItems] = useState([]);
   const [listAttributes, setListAttributes] = useState({
     id: 0,
     name: "",
@@ -42,9 +43,6 @@ const CreateList = () => {
   useEffect(() => {
     onVisibleCreateListHandler();
   }, []);
-
-  const [listItems, setlistItems] = useState([]);
-  useState();
 
   const onAddNewItemHandler = (newItem) => {
     const updatedList = listItems;
@@ -108,7 +106,9 @@ const CreateList = () => {
       url: url,
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: { lists: createlistAttributes, items: listItems },
+      //correct body to post with items -> body: { lists: createlistAttributes, items: listItems },
+      // post with only the list to test how it works
+      body: { lists: createlistAttributes },
     };
 
     const transformDataPost = (data) => {

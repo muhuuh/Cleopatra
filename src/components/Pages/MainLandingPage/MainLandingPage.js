@@ -5,6 +5,7 @@ import useHttp from "../../../hooks/use-http";
 import { listActions } from "../../store/list-slice";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
+import { itemActions } from "../../store/item-slice";
 
 const MainLandingPage = () => {
   const listsStore = useSelector((state) => state.lists);
@@ -14,7 +15,8 @@ const MainLandingPage = () => {
   const { httpState: httpState_refresh, sendRequest: refreshList } = useHttp();
   const dispatch = useDispatch();
   //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
-  const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  //const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items";
 
   useEffect(() => {
     const transformData = (data) => {
@@ -37,9 +39,18 @@ const MainLandingPage = () => {
           last_modification_date: data[index].last_modification_date,
         });
       }
-      console.log(loadedTasks);
       setTasks(loadedTasks);
       dispatch(listActions.fetchList(loadedTasks));
+
+      let fetchedItems = [];
+      for (let i in loadedTasks) {
+        for (let j in loadedTasks[i].items) {
+          fetchedItems.push(loadedTasks[i].items[j].listitem);
+        }
+      }
+      console.log("fetchedItems");
+      console.log(fetchedItems);
+      dispatch(itemActions.getItemFromFetchedList(fetchedItems));
     };
 
     fetchTasks(
@@ -112,6 +123,7 @@ const MainLandingPage = () => {
       name={list.name}
       owner={list.owner.username}
       shortDescription={list.shortDescription}
+      items={list.items}
       //onRemove={onRemoveHandler}
     />
   ));

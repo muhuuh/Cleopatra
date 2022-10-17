@@ -62,7 +62,7 @@ const itemSlice = createSlice({
   initialState: defaultState,
   reducers: {
     createItem(state, action) {
-      console.log("itemsstore")
+      console.log("itemsstore");
       const newItem = action.payload;
       state.items.push({
         id: newItem.id,
@@ -72,14 +72,29 @@ const itemSlice = createSlice({
         description: newItem.description,
         lists: newItem.lists,
       });
-      console.log("itemstore")
-      console.log(state.items)
+      console.log("itemstore");
+      console.log(state.items);
     },
     deleteItem(state, action) {
       const id = action.payload;
       const remainingItems = state.items.filter((item) => item.id !== id);
 
       state.items = remainingItems;
+    },
+    getItemFromFetchedList(state, action) {
+      const fetchedItems = action.payload;
+      console.log(fetchedItems);
+      let existingsItemIds = [];
+      state.items.map((item) => existingsItemIds.push(item.id));
+
+      let itemsToAdd = [];
+      for (let i in fetchedItems) {
+        if (!existingsItemIds.includes(fetchedItems[i].id)) {
+          itemsToAdd.push(fetchedItems[i]);
+        }
+      }
+      const updatedCurrentItems = state.items.concat(itemsToAdd);
+      state.items = updatedCurrentItems;
     },
     addItemToList(state, action) {},
     removeItemFromList(state, action) {},

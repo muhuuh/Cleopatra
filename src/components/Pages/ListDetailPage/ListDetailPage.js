@@ -8,9 +8,14 @@ const ListDetailPage = () => {
   const listsStore = useSelector((state) => state.lists);
   const itemsStore = useSelector((state) => state.items);
 
-  
   const currentId = params.listId;
-  const existingList = listsStore.lists.find((list) => list.id === currentId);
+  console.log("listsStore.lists");
+  console.log(listsStore.lists);
+  console.log("itemsStore.items");
+  console.log(itemsStore.items);
+  const existingList = listsStore.lists.find((list) => list.id == currentId);
+  console.log("existingList");
+  console.log(existingList);
 
   const itemsInList = itemsStore.items.filter((item) =>
     existingList.items.includes(item.id)
