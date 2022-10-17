@@ -8,25 +8,21 @@ const ListDetailPage = () => {
   const listsStore = useSelector((state) => state.lists);
   const itemsStore = useSelector((state) => state.items);
 
+  //add a fecthing of the list id based on params, in cased listStore is empty (sharing the url link directly without first going from main_landing_page)
+
   const currentId = params.listId;
-  console.log("listsStore.lists");
-  console.log(listsStore.lists);
-  console.log("itemsStore.items");
-  console.log(itemsStore.items);
   const existingList = listsStore.lists.find((list) => list.id == currentId);
-  console.log("existingList");
-  console.log(existingList);
 
   const itemsInList = itemsStore.items.filter((item) =>
-    existingList.items.includes(item.id)
+    existingList.items.includes(item.list_item_id)
   );
 
   const listOfItems = itemsInList.map((item) => (
     <ListItemPage
-      key={item.id}
-      id={item.id}
-      name={item.name}
-      description={item.description}
+      key={item.list_item_id}
+      id={item.list_item_id}
+      name={item.item_name}
+      description={item.item_notes}
     />
   ));
 
@@ -35,7 +31,7 @@ const ListDetailPage = () => {
       <h1 className="text-xl font-bold mb-8">List Detail Page</h1>
       <div className="text-center w-2/3">
         <div className="">Name: {existingList.name}</div>
-        <div className="mb-6 ">By: {existingList.owner}</div>
+        <div className="mb-6 ">By: {existingList.owner.username}</div>
 
         <div className="font-lg font-bold mb-4">Description</div>
         <div>

@@ -2,52 +2,52 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const DUMMY_ITEMS = [
   {
-    id: 0,
-    name: "Camera",
+    list_item_id: 10,
+    item_name: "Camera",
     category: "Fotos",
-    description: "The must-have cameras for the best pictures",
+    short_description: "The must-have cameras for the best pictures",
     lists: [0, 1, 2, 3],
   },
   {
-    id: 1,
-    name: "Lens",
+    list_item_id: 11,
+    item_name: "Lens",
     category: "Fotos",
-    description: "The perfect lens for better fotos",
+    short_description: "The perfect lens for better fotos",
     lists: [0, 1, 3],
   },
   {
-    id: 2,
-    name: "Backpack",
+    list_item_id: 12,
+    item_name: "Backpack",
     category: "Fotos",
-    description: "A packpack to transport your accesories",
+    short_description: "A packpack to transport your accesories",
     lists: [1],
   },
   {
-    id: 3,
-    name: "Tires",
+    list_item_id: 13,
+    item_name: "Tires",
     category: "Cars",
-    description: "New tires for the winter",
+    short_description: "New tires for the winter",
     lists: [2],
   },
   {
-    id: 4,
-    name: "Car Jack",
+    list_item_id: 14,
+    item_name: "Car Jack",
     category: "Cars",
-    description: "This is to lift up your car",
+    short_description: "This is to lift up your car",
     lists: [2],
   },
   {
-    id: 5,
-    name: "My bike",
+    list_item_id: 15,
+    item_name: "My bike",
     category: "Bikes",
-    description: "A bike like you've never seen",
+    short_description: "A bike like you've never seen",
     lists: [0, 3, 4],
   },
   {
-    id: 6,
-    name: "Red Helmet",
+    list_item_id: 16,
+    item_name: "Red Helmet",
     category: "Bikes",
-    description: "It will save your life",
+    short_description: "It will save your life",
     lists: [0, 2, 3, 5],
   },
 ];
@@ -65,19 +65,26 @@ const itemSlice = createSlice({
       console.log("itemsstore");
       const newItem = action.payload;
       state.items.push({
-        id: newItem.id,
-        name: newItem.name,
+        list_item_id: newItem.id,
+        item_name: newItem.name,
         category: newItem.category,
         shortDescription: newItem.shortDescription,
-        description: newItem.description,
+        item_notes: newItem.description,
         lists: newItem.lists,
+        creation_date: "add creation date",
+        last_modification_date: "add last modification",
+        has_affiliate_link: null,
+        hyperlink: "add hyperlink",
+        item_brand: "add brand",
       });
       console.log("itemstore");
       console.log(state.items);
     },
     deleteItem(state, action) {
       const id = action.payload;
-      const remainingItems = state.items.filter((item) => item.id !== id);
+      const remainingItems = state.items.filter(
+        (item) => item.list_item_id !== id
+      );
 
       state.items = remainingItems;
     },
@@ -85,11 +92,11 @@ const itemSlice = createSlice({
       const fetchedItems = action.payload;
       console.log(fetchedItems);
       let existingsItemIds = [];
-      state.items.map((item) => existingsItemIds.push(item.id));
+      state.items.map((item) => existingsItemIds.push(item.list_item_id));
 
       let itemsToAdd = [];
       for (let i in fetchedItems) {
-        if (!existingsItemIds.includes(fetchedItems[i].id)) {
+        if (!existingsItemIds.includes(fetchedItems[i].list_item_id)) {
           itemsToAdd.push(fetchedItems[i]);
         }
       }

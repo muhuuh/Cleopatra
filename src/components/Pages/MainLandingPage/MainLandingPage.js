@@ -15,7 +15,6 @@ const MainLandingPage = () => {
   const { httpState: httpState_refresh, sendRequest: refreshList } = useHttp();
   const dispatch = useDispatch();
   //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
-  //const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
   const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items";
 
   useEffect(() => {
@@ -115,7 +114,6 @@ const MainLandingPage = () => {
   */
 
   //list from the api fetch
-  //const listItems = tasks.map((list) => (
   const listItems = listsStore.lists.map((list) => (
     <ListSummary
       key={list.id}
