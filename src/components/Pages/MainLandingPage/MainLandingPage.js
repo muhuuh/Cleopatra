@@ -5,6 +5,7 @@ import useHttp from "../../../hooks/use-http";
 import { listActions } from "../../store/list-slice";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../UI/LoadingSpinner";
+import { itemActions } from "../../store/item-slice";
 
 const MainLandingPage = () => {
   const listsStore = useSelector((state) => state.lists);
@@ -13,11 +14,56 @@ const MainLandingPage = () => {
   const { httpState: httpState_fetch, sendRequest: fetchTasks } = useHttp();
   const { httpState: httpState_refresh, sendRequest: refreshList } = useHttp();
   const dispatch = useDispatch();
+  //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items";
 
-  
   useEffect(() => {
     const transformData = (data) => {
-      console.log(data)
+      console.log(data);
+      const loadedTasks = [];
+      for (const index in data) {
+        loadedTasks.push({
+          id: data[index].list_id,
+          name: data[index].title,
+          category: "add_category",
+          owner: data[index].creator,
+          items: data[index].listitem_mapping,
+          users: "add_users",
+          shortDescription: data[index].description,
+          description: data[index].notes,
+          has_collaborators: data[index].has_collaborators,
+          is_public: data[index].is_public,
+          list_image: data[index].list_image,
+          creation_date: data[index].creation_date,
+          last_modification_date: data[index].last_modification_date,
+        });
+      }
+      setTasks(loadedTasks);
+      dispatch(listActions.fetchList(loadedTasks));
+
+      let fetchedItems = [];
+      for (let i in loadedTasks) {
+        for (let j in loadedTasks[i].items) {
+          fetchedItems.push(loadedTasks[i].items[j].listitem);
+        }
+      }
+      console.log("fetchedItems");
+      console.log(fetchedItems);
+      dispatch(itemActions.getItemFromFetchedList(fetchedItems));
+    };
+
+    fetchTasks(
+      {
+        url: url,
+      },
+      transformData
+    );
+  }, [fetchTasks]);
+
+  /*
+  useEffect(() => {
+    const transformData = (data) => {
+      console.log(data);
       const loadedTasks = [];
       for (const taskKey in data) {
         loadedTasks.push({
@@ -31,46 +77,21 @@ const MainLandingPage = () => {
           description: data[taskKey].lists.description,
         });
       }
-      console.log(loadedTasks)
+      console.log(loadedTasks);
       setTasks(loadedTasks);
       dispatch(listActions.fetchList(loadedTasks));
     };
-    
-
-    /*
-    useEffect(() => {
-      const transformData = (data) => {
-        console.log("test")
-        console.log(data.lists)
-        const loadedTasks = [];
-        for (const index in data.lists) {
-          loadedTasks.push({
-            id: data.lists[index].id,
-            name: data.lists[index].name,
-            category: data.lists[index].category,
-            owner: data.lists[index].owner,
-            items: data.lists[index].items,
-            users: data.lists[index].users,
-            shortDescription: data.lists[index].shortDescription,
-            description: data.lists[index].description,
-          });
-        }
-        console.log(loadedTasks)
-        setTasks(loadedTasks);
-        dispatch(listActions.fetchList(loadedTasks));
-      };
-
-      */
 
     fetchTasks(
       {
-        url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
+        url: url,
       },
       transformData
     );
   }, [fetchTasks]);
+  */
 
-/*
+  /*
   const onRemoveHandler = () => {
     
     console.log("removing")
@@ -93,14 +114,14 @@ const MainLandingPage = () => {
   */
 
   //list from the api fetch
-  //const listItems = tasks.map((list) => (
   const listItems = listsStore.lists.map((list) => (
     <ListSummary
       key={list.id}
       id={list.id}
       name={list.name}
-      owner={list.owner}
+      owner={list.owner.username}
       shortDescription={list.shortDescription}
+      items={list.items}
       //onRemove={onRemoveHandler}
     />
   ));
@@ -117,7 +138,7 @@ const MainLandingPage = () => {
     return <div className="flex justify-center">{httpState_refresh.error}</div>;
   }
 
-  console.log(httpState_refresh.status)
+  console.log(httpState_refresh.status);
 
   return (
     <div className="mx-16">
