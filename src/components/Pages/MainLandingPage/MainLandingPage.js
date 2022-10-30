@@ -91,11 +91,9 @@ const MainLandingPage = () => {
   }, [fetchTasks]);
   */
 
-  /*
   const onRemoveHandler = () => {
-    
-    console.log("removing")
-    console.log(listsStore)
+    console.log("removing");
+    console.log(listsStore);
     const postConfig = {
       url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
       method: "PUT",
@@ -109,9 +107,8 @@ const MainLandingPage = () => {
     };
 
     refreshList(postConfig, transformDataPost);
-    console.log("after removed")
-  }
-  */
+    console.log("after removed");
+  };
 
   //list from the api fetch
   const listItems = listsStore.lists.map((list) => (
@@ -122,7 +119,7 @@ const MainLandingPage = () => {
       owner={list.owner.username}
       shortDescription={list.shortDescription}
       items={list.items}
-      //onRemove={onRemoveHandler}
+      onRemove={onRemoveHandler}
     />
   ));
 

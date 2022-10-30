@@ -1,9 +1,11 @@
 import useInput from "../../../hooks/use-input";
 import Modal from "../../UI/Modal";
+import useHttp from "../../../hooks/use-http";
 
 const CreateListInput = (props) => {
-
-
+  const { httpState, sendRequest: postLists } = useHttp();
+  //const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  const url = "http://192.168.0.206:8000/listapi/v1/lists/";
   const checkValidity = (input) => {
     return input.trim() !== "";
   };
@@ -25,7 +27,7 @@ const CreateListInput = (props) => {
     ? "form-control invalid"
     : "form-control";
 
-  let randomId = Math.random().toString().replace(".","");
+  let randomId = Math.random().toString().replace(".", "");
 
   const newList = {
     id: randomId,
@@ -53,7 +55,36 @@ const CreateListInput = (props) => {
       return;
     }
 
-    //dispatch(listActions.createList(newList));
+    //send a empty list to backend
+
+    const newListAttribute = {
+      title: newList.name,
+      creator: "add user id from cookie",
+      description: newList.shortDescription,
+      notes: newList.description,
+      is_public: "add is_public",
+      list_image: "add list_image",
+    };
+
+    const postConfig = {
+      url: url,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      //body: { lists: newListAttribute },
+      body: newListAttribute,
+    };
+
+    const transformDataPost = (data) => {
+      const generatedId = data.name; // firebase-specific => "name" contains generated id
+      const createdTask = { id: generatedId, text: newListAttribute };
+
+      console.log("generatedId");
+      console.log(generatedId);
+      //update list store with the new list and the new id
+      //dispatch(listActions.addList(createlistAttributes));
+    };
+
+    postLists(postConfig, transformDataPost);
     props.onNewList(newList);
 
     nameInput.resetInput();

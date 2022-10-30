@@ -72,6 +72,7 @@ const CreateList = () => {
     />
   ));
 
+  //current form of first saving with created list and created items
   const onSaveListHandler = () => {
     //add items id in it
     const itemsIdList = [];
