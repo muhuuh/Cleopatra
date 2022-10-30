@@ -27,7 +27,6 @@ const httpReducer = (state, action) => {
 };
 
 const UseHttp = () => {
-
   const [httpState, dispatchHttp] = useReducer(httpReducer, defaultState);
 
   const sendRequest = useCallback(async (resquestConfig, applyData) => {
@@ -35,17 +34,18 @@ const UseHttp = () => {
     try {
       const response = await fetch(resquestConfig.url, {
         method: resquestConfig.method ? resquestConfig.method : "GET",
-        header: resquestConfig.header ? resquestConfig.header : {},
+        headers: resquestConfig.headers ? resquestConfig.headers : {},
         body: resquestConfig.body ? JSON.stringify(resquestConfig.body) : null,
+        mode: "cors",
       });
 
       if (!response.ok) {
-        console.log("error")
+        console.log("error, response failed");
         throw new Error("Request failed!");
       }
 
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       applyData(data);
     } catch (err) {
       dispatchHttp({

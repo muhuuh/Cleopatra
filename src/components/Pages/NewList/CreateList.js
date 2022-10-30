@@ -17,6 +17,7 @@ const CreateList = () => {
   const listsStore = useSelector((state) => state.lists);
   //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
   const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
 
   const {
     isVisible: isCreateItemVisible,

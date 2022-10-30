@@ -16,6 +16,7 @@ const MainLandingPage = () => {
   const dispatch = useDispatch();
   //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
   const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items";
+  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
 
   useEffect(() => {
     const transformData = (data) => {
@@ -95,7 +96,7 @@ const MainLandingPage = () => {
     console.log("removing");
     console.log(listsStore);
     const postConfig = {
-      url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
+      url: url,
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: { lists: listsStore.lists, items: itemsStore.items },
