@@ -1,4 +1,3 @@
-
 import { useDispatch } from "react-redux";
 import useInput from "../../../hooks/use-input";
 import { itemActions } from "../../store/item-slice";
@@ -25,10 +24,10 @@ const CreateItem = (props) => {
     : "form-control";
 
   const newItem = {
-    id: Math.random(),
-    name: nameInput.enteredInput,
+    list_item_id: Math.random(),
+    item_name: nameInput.enteredInput,
     category: categoryInput.enteredInput,
-    description: descriptionInput.enteredInput,
+    short_description: descriptionInput.enteredInput,
     lists: [],
   };
 
@@ -48,6 +47,8 @@ const CreateItem = (props) => {
       return;
     }
 
+    //POST new item to database
+
     dispatch(itemActions.createItem(newItem));
     props.onAddNewItem(newItem);
 
@@ -55,9 +56,7 @@ const CreateItem = (props) => {
     categoryInput.resetInput();
     descriptionInput.resetInput();
 
-    props.onClose()
-
-    //history.push("/todos");
+    props.onClose();
   };
 
   return (
@@ -110,7 +109,6 @@ const CreateItem = (props) => {
                 ? "bg-gray-500"
                 : "bg-brownRed hover:font-bold hover:scale-110"
             } border-2 rounded-lg border-white  py-1 px-4 `}
-            
           >
             Create
           </button>

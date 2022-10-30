@@ -1,10 +1,13 @@
 import useInput from "../../../hooks/use-input";
 import Modal from "../../UI/Modal";
 import useHttp from "../../../hooks/use-http";
+import { useDispatch } from "react-redux";
+import { listActions } from "../../store/list-slice";
 
 const CreateListInput = (props) => {
   const { httpState, sendRequest: postLists } = useHttp();
-  const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  const dispatch = useDispatch();
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists/";
   //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
   const checkValidity = (input) => {
     return input.trim() !== "";
@@ -31,10 +34,10 @@ const CreateListInput = (props) => {
 
   const newList = {
     id: "random_id",
-    name: nameInput.enteredInput,
+    title: nameInput.enteredInput,
     category: categoryInput.enteredInput,
-    shortDescription: shortDescriptionInput.enteredInput,
-    description: descriptionInput.enteredInput,
+    description: shortDescriptionInput.enteredInput,
+    notes: descriptionInput.enteredInput,
     lists: [],
   };
 
@@ -55,13 +58,11 @@ const CreateListInput = (props) => {
       return;
     }
 
-    //send a empty list to backend
-
     const newListAttribute = {
-      title: newList.name,
+      title: newList.title,
       creator: 1,
-      //description: newList.shortDescription,
-      notes: newList.description,
+      description: newList.description,
+      notes: newList.notes,
       //is_public: "add is_public",
       //list_image: "add list_image",
     };
@@ -76,23 +77,20 @@ const CreateListInput = (props) => {
 
     const transformDataPost = (data) => {
       const receivedData = data;
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = { id: generatedId, text: newListAttribute };
-
-      console.log("receivedData");
-      console.log(receivedData);
+      const createdTask = { data: receivedData, text: newListAttribute };
 
       //update newList state with the new list and the new id, created date and modification ate
       //crate the list ("newEmptyList") with all the attributes as we need it and with empty item array
-      const updatedReceivedData = { ...receivedData, users: [] };
+      const updatedReceivedData = { ...receivedData, users: [], items: [] };
       console.log("updatedReceivedData");
       console.log(updatedReceivedData);
-      //dispatch(listActions.addList(newEmptyList));
+      props.onNewList(updatedReceivedData);
+      dispatch(listActions.addList(updatedReceivedData));
     };
 
     postLists(postConfig, transformDataPost);
 
-    props.onNewList(newList);
+    //props.onNewList(newList);
 
     nameInput.resetInput();
     categoryInput.resetInput();

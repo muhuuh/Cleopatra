@@ -62,14 +62,13 @@ const itemSlice = createSlice({
   initialState: defaultState,
   reducers: {
     createItem(state, action) {
-      console.log("itemsstore");
       const newItem = action.payload;
       state.items.push({
-        list_item_id: newItem.id,
-        item_name: newItem.name,
+        list_item_id: newItem.list_item_id,
+        item_name: newItem.item_name,
         category: newItem.category,
-        shortDescription: newItem.shortDescription,
-        item_notes: newItem.description,
+        short_escription: newItem.short_description,
+        item_notes: newItem.notes,
         lists: newItem.lists,
         creation_date: "add creation date",
         last_modification_date: "add last modification",

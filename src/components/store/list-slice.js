@@ -69,7 +69,6 @@ const DUMMY_LISTS = [
   },
 ];
 
-
 const defaultState = {
   //lists: DUMMY_LISTS,
   lists: [],
@@ -83,25 +82,34 @@ const listSlice = createSlice({
   reducers: {
     addList(state, action) {
       const newList = action.payload;
-      const existingList = state.lists.find((list) => list.id === newList.id);
+      const existingList = state.lists.find(
+        (list) => list.list_id === newList.list_id
+      );
 
       if (!existingList) {
         state.lists.push({
-          id: newList.id,
-          name: newList.name,
+          list_id: newList.list_id,
+          title: newList.title,
           category: newList.category,
-          owner: "user_id from cookie",
+          creator: "user_id from cookie",
           items: newList.items,
           users: newList.users,
-          shortDescription: newList.shortDescription,
           description: newList.description,
+          notes: newList.notes,
         });
         console.log("new list pushed");
-        console.log("all lists")
+        console.log("all lists");
         console.log(state.lists);
       } else {
         console.log("list already exists");
       }
+    },
+    updateList(state, action) {
+      const listToBeUpdated = action.payload;
+      const updateList = state.lists.filter(
+        (list) => list.list_id == listToBeUpdated.list_id
+      );
+      state.lists = updateList;
     },
     fetchList(state, action) {
       const fetchedList = action.payload;
@@ -110,7 +118,7 @@ const listSlice = createSlice({
     },
     deleteList(state, action) {
       const id = action.payload;
-      const remainingLists = state.lists.filter((list) => list.id !== id);
+      const remainingLists = state.lists.filter((list) => list.list_id !== id);
       state.lists = remainingLists;
     },
   },

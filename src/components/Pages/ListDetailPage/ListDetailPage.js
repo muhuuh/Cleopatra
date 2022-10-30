@@ -8,10 +8,15 @@ const ListDetailPage = () => {
   const listsStore = useSelector((state) => state.lists);
   const itemsStore = useSelector((state) => state.items);
 
+  console.log("itemsStore");
+  console.log(itemsStore);
+
   //add a fecthing of the list id based on params, in cased listStore is empty (sharing the url link directly without first going from main_landing_page)
 
   const currentId = params.listId;
-  const existingList = listsStore.lists.find((list) => list.id == currentId);
+  const existingList = listsStore.lists.find(
+    (list) => list.list_id == currentId
+  );
 
   const itemsInList = itemsStore.items.filter((item) =>
     existingList.items.includes(item.list_item_id)
@@ -30,8 +35,8 @@ const ListDetailPage = () => {
     <div className="flex flex-col justify-center items-center ">
       <h1 className="text-xl font-bold mb-8">List Detail Page</h1>
       <div className="text-center w-2/3">
-        <div className="">Name: {existingList.name}</div>
-        <div className="mb-6 ">By: {existingList.owner.username}</div>
+        <div className="">Name: {existingList.title}</div>
+        <div className="mb-6 ">By: {existingList.creator.username}</div>
 
         <div className="font-lg font-bold mb-4">Description</div>
         <div>
