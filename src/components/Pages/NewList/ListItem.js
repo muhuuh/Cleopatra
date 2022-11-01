@@ -8,10 +8,13 @@ const ListItem = (props) => {
   return (
     <div className="flex flex-row justify-between border-2 rounded-md shadow-lg h-24">
       <div className="w-24 bg-red-500">Image</div>
-      <div className="flex flex-col grow text-center">
-        <div className=" text-center">{props.item_name}</div>
-        <div className="text-center">{props.short_description}</div>
-      </div>
+
+      <div className=" text-center">Name: {props.item_name}</div>
+      <div className="text-center">Brand: {props.item_brand}</div>
+
+      <div className="text-center">Description: {props.short_description}</div>
+      <div>Notes: {props.item_notes}</div>
+      <div>Link: {props.hyperlink}</div>
       <button onClick={onRemove}>Remove</button>
     </div>
   );

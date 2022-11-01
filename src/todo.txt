@@ -3,3 +3,8 @@
 
 - do user authentication
 -add filtering logic in recommended list overview (add usestate to find what user has checked and add it to the filter() logic)
+
+
+
+- check if item array in list (and vice versa) are still necessary)
+-clean up

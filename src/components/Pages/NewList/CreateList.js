@@ -15,7 +15,7 @@ import SuccessCreated from "./SuccessCreated";
 const CreateList = () => {
   const { httpState, sendRequest: postLists } = useHttp();
   const listsStore = useSelector((state) => state.lists);
-  //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
+
   const url = "https://cleolist.herokuapp.com/listapi/v1/lists/";
   //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
 
@@ -47,7 +47,7 @@ const CreateList = () => {
 
   const onAddNewItemHandler = (newItem) => {
     const updatedList = listItems;
-    newItem.lists = [listAttributes.id];
+    newItem.userlist = listAttributes.list_id;
     updatedList.push(newItem);
     setlistItems(updatedList);
   };
@@ -65,36 +65,26 @@ const CreateList = () => {
     setlistItems(updateditems);
   };
 
+  console.log("listItems");
+  console.log(listItems);
+
   const currentlistItems = listItems.map((item) => (
     <ListItem
-      key={item.list_item_id}
-      list_item_id={item.list_item_id}
-      item_name={item.item_name}
-      short_description={item.short_description}
+      //key={item.listitem.list_item_id}
+      key={1}
+      list_item_id={item.listitem.list_item_id}
+      item_name={item.listitem.item_name}
+      item_brand={item.listitem.item_brand}
+      short_description={item.listitem.short_description}
+      item_notes={item.listitem.item_notes}
+      hyperlink={item.listitem.hyperlink}
+      has_affiliate_link={item.has_affiliate_link}
       onRemove={onRemoveHandler}
     />
   ));
 
   //current form of first saving with created list and created items
   const onSaveListHandler = () => {
-    /*
-    const createlistAttributes = {
-      list_id: listAttributes.list_id,
-      title: listAttributes.title,
-      category: listAttributes.category,
-      creator: "add user id from cookie",
-      items: itemsIdList,
-      users: [],
-      description: listAttributes.description,
-      notes: listAttributes.notes,
-      has_collaborators: "add has_collaborators",
-      is_public: "add is_public",
-      list_image: "add list_image",
-      creation_date: "add creation_date",
-      last_modification_date: "last_modification_date",
-    };
-    */
-
     //when btton "SaveList" clicked, only update the arrays of the items the list has
 
     const postConfig = {
@@ -118,7 +108,7 @@ const CreateList = () => {
 
     postLists(postConfig, transformDataPost);
 
-    //const url = `/lists/detailpage/${listAttributes.id}`;
+    //const url = `/lists/detailpage/${listAttributes.list_id}`;
     //history.push("/main_landing_page");
   };
   return (
@@ -129,6 +119,7 @@ const CreateList = () => {
           <CreateItem
             onClose={onCloseCreateItemHandler}
             onAddNewItem={onAddNewItemHandler}
+            listId={listAttributes.list_id}
           />
         )}
       </div>

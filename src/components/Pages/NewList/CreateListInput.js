@@ -3,6 +3,7 @@ import Modal from "../../UI/Modal";
 import useHttp from "../../../hooks/use-http";
 import { useDispatch } from "react-redux";
 import { listActions } from "../../store/list-slice";
+import { useState } from "react";
 
 const CreateListInput = (props) => {
   const { httpState, sendRequest: postLists } = useHttp();
