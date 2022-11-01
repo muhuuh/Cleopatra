@@ -54,6 +54,7 @@ const CreateItem = (props) => {
       item_brand: brandInput.enteredInput,
     },
     userlist: props.listId,
+    //userlist: 17,
     section: 1,
     section_order: 1,
     added_by: 1,
@@ -93,9 +94,8 @@ const CreateItem = (props) => {
 
       console.log("receivedData");
       console.log(receivedData);
-
-      dispatch(itemActions.createItem(receivedData));
       props.onAddNewItem(receivedData);
+      dispatch(itemActions.createItem(receivedData));
     };
 
     postItem(postConfig, transformDataPost);

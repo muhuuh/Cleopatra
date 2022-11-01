@@ -53,7 +53,7 @@ const DUMMY_ITEMS = [
 ];
 
 const defaultState = {
-  items: DUMMY_ITEMS,
+  items: [],
   totalItems: 0,
 };
 
@@ -63,19 +63,23 @@ const itemSlice = createSlice({
   reducers: {
     createItem(state, action) {
       const newItem = action.payload;
+      state.items.push(newItem);
+      /*
       state.items.push({
-        list_item_id: newItem.list_item_id,
-        item_name: newItem.item_name,
-        category: newItem.category,
-        short_escription: newItem.short_description,
-        item_notes: newItem.notes,
+        listitem: {
+          list_item_id: newItem.list_item_id,
+          item_name: newItem.item_name,
+          short_description: newItem.short_description,
+          item_notes: newItem.notes,
+          has_affiliate_link: null,
+          hyperlink: "add hyperlink",
+          item_brand: "add brand",
+        },
         lists: newItem.lists,
         creation_date: "add creation date",
         last_modification_date: "add last modification",
-        has_affiliate_link: null,
-        hyperlink: "add hyperlink",
-        item_brand: "add brand",
       });
+      */
       console.log("itemstore");
       console.log(state.items);
     },
@@ -89,16 +93,23 @@ const itemSlice = createSlice({
     },
     getItemFromFetchedList(state, action) {
       const fetchedItems = action.payload;
-      console.log(fetchedItems);
       let existingsItemIds = [];
-      state.items.map((item) => existingsItemIds.push(item.list_item_id));
+      const existingItems = state.items;
+      console.log("existingItems");
+      console.log(existingItems);
+      existingItems.map((item) => console.log(item.listitem));
+
+      state.items.map((item) =>
+        existingsItemIds.push(item.listitem.list_item_id)
+      );
 
       let itemsToAdd = [];
       for (let i in fetchedItems) {
-        if (!existingsItemIds.includes(fetchedItems[i].list_item_id)) {
+        if (!existingsItemIds.includes(fetchedItems[i].listitem.list_item_id)) {
           itemsToAdd.push(fetchedItems[i]);
         }
       }
+
       const updatedCurrentItems = state.items.concat(itemsToAdd);
       state.items = updatedCurrentItems;
     },

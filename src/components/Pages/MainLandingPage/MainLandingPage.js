@@ -45,9 +45,10 @@ const MainLandingPage = () => {
       let fetchedItems = [];
       for (let i in loadedTasks) {
         for (let j in loadedTasks[i].items) {
-          fetchedItems.push(loadedTasks[i].items[j].listitem);
+          fetchedItems.push(loadedTasks[i].items[j]);
         }
       }
+
       console.log("fetchedItems");
       console.log(fetchedItems);
       dispatch(itemActions.getItemFromFetchedList(fetchedItems));
