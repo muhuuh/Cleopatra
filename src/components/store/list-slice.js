@@ -106,10 +106,10 @@ const listSlice = createSlice({
     },
     updateList(state, action) {
       const listToBeUpdated = action.payload;
-      const updateList = state.lists.filter(
-        (list) => list.list_id == listToBeUpdated.list_id
+      const listIndex = state.lists.findIndex(
+        (list) => list.list_id == listToBeUpdated[0].list_id
       );
-      state.lists = updateList;
+      state.lists[listIndex] = listToBeUpdated[0];
     },
     fetchList(state, action) {
       const fetchedList = action.payload;

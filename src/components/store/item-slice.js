@@ -86,7 +86,7 @@ const itemSlice = createSlice({
     deleteItem(state, action) {
       const id = action.payload;
       const remainingItems = state.items.filter(
-        (item) => item.list_item_id !== id
+        (item) => item.listitem.list_item_id !== id
       );
 
       state.items = remainingItems;

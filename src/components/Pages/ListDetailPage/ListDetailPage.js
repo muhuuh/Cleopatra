@@ -10,6 +10,8 @@ const ListDetailPage = () => {
 
   console.log("itemsStore");
   console.log(itemsStore);
+  console.log("listsStore");
+  console.log(listsStore);
 
   //add a fecthing of the list id based on params, in cased listStore is empty (sharing the url link directly without first going from main_landing_page)
 
@@ -18,16 +20,23 @@ const ListDetailPage = () => {
     (list) => list.list_id == currentId
   );
 
+  const itemsInList = existingList.items;
+
+  /*
   const itemsInList = itemsStore.items.filter((item) =>
     existingList.items.includes(item.list_item_id)
   );
+  */
 
   const listOfItems = itemsInList.map((item) => (
     <ListItemPage
-      key={item.list_item_id}
-      id={item.list_item_id}
-      name={item.item_name}
-      description={item.item_notes}
+      key={item.listitem.list_item_id}
+      id={item.listitem.list_item_id}
+      item_name={item.listitem.item_name}
+      item_notes={item.listitem.item_notes}
+      item_description={item.listitem.item_description}
+      hyperlink={item.listitem.hyperlink}
+      currentListId={currentId}
     />
   ));
 
