@@ -15,8 +15,10 @@ import SuccessCreated from "./SuccessCreated";
 const CreateList = () => {
   const { httpState, sendRequest: postLists } = useHttp();
   const listsStore = useSelector((state) => state.lists);
-  //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
-  const url = "https://cleolist.herokuapp.com/listapi/v1/lists";
+  const itemsStore = useSelector((state) => state.items);
+
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists/";
+  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
 
   const {
     isVisible: isCreateItemVisible,
@@ -46,7 +48,7 @@ const CreateList = () => {
 
   const onAddNewItemHandler = (newItem) => {
     const updatedList = listItems;
-    newItem.lists = [listAttributes.id];
+    //newItem.userlist = listAttributes.list_id;
     updatedList.push(newItem);
     setlistItems(updatedList);
   };
@@ -56,69 +58,57 @@ const CreateList = () => {
     onCloseCreateListHandler();
   };
 
-  const onRemoveHandler = (id) => {
+  const onRemoveHandler = (list_item_id) => {
     let updateditems = listItems;
-    updateditems = updateditems.filter((item) => item.id !== id);
+    updateditems = updateditems.filter(
+      (item) => item.list_item_id !== list_item_id
+    );
     setlistItems(updateditems);
   };
 
   const currentlistItems = listItems.map((item) => (
     <ListItem
-      key={item.id}
-      id={item.id}
-      name={item.name}
-      description={item.description}
+      key={item.listitem.list_item_id}
+      list_item_id={item.listitem.list_item_id}
+      item_name={item.listitem.item_name}
+      item_brand={item.listitem.item_brand}
+      short_description={item.listitem.short_description}
+      item_notes={item.listitem.item_notes}
+      hyperlink={item.listitem.hyperlink}
+      has_affiliate_link={item.has_affiliate_link}
       onRemove={onRemoveHandler}
     />
   ));
 
+  console.log("currentlistItems");
+  console.log(currentlistItems);
+
+  //current form of first saving with created list and created items
   const onSaveListHandler = () => {
-    //add items id in it
-    const itemsIdList = [];
-    listItems.map((list) => itemsIdList.push(list.id));
-
-    const createlistAttributes = {
-      id: listAttributes.id,
-      title: listAttributes.name,
-      category: listAttributes.category,
-      creator: "add user id from cookie",
-      items: itemsIdList,
-      users: [],
-      description: listAttributes.shortDescription,
-      notes: listAttributes.description,
-      has_collaborators: "add has_collaborators",
-      is_public: "add is_public",
-      list_image: "add list_image",
-      creation_date: "add creation_date",
-      last_modification_date: "last_modification_date",
-    };
-
-    console.log("list attributes");
-    console.log(createlistAttributes);
-    console.log("item id");
-    console.log(itemsIdList);
-    console.log("new item");
-    console.log(listItems);
-    dispatch(listActions.addList(createlistAttributes));
-    dispatch(itemActions.createItem(listItems));
+    //when btton "SaveList" clicked, only update the arrays of the items the list has
 
     const postConfig = {
       url: url,
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      //correct body to post with items -> body: { lists: createlistAttributes, items: listItems },
-      // post with only the list to test how it works
-      body: { lists: createlistAttributes },
+      //post the list of items created
+      body: listItems,
     };
 
     const transformDataPost = (data) => {
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = { id: generatedId, text: listsStore.lists };
+      const receivedData = data;
+      const createdTask = { data: receivedData, text: listsStore.lists };
+
+      //update itemsIdList with the list if item id that we receive with receiveData
+      const itemsIdList = [];
+      //listItems.map((list) => itemsIdList.push(list.list_item_id));
+      const listWithItems = { ...listAttributes, items: itemsIdList };
+      dispatch(listActions.updateList(listWithItems));
     };
 
     postLists(postConfig, transformDataPost);
 
-    //const url = `/lists/detailpage/${listAttributes.id}`;
+    //const url = `/lists/detailpage/${listAttributes.list_id}`;
     //history.push("/main_landing_page");
   };
   return (
@@ -129,6 +119,7 @@ const CreateList = () => {
           <CreateItem
             onClose={onCloseCreateItemHandler}
             onAddNewItem={onAddNewItemHandler}
+            listId={listAttributes.list_id}
           />
         )}
       </div>
@@ -141,10 +132,10 @@ const CreateList = () => {
         )}
       </div>
       <div>
-        <div>name: {listAttributes.name}</div>
+        <div>Title: {listAttributes.title}</div>
         <div>category: {listAttributes.category}</div>
-        <div>Short description: {listAttributes.shortDescription}</div>
-        <div>description: {listAttributes.description}</div>
+        <div>Description: {listAttributes.description}</div>
+        <div>Notes: {listAttributes.notes}</div>
       </div>
       <div className="flex justify-center">
         <div className="flex flex-col gap-y-4 mt-20 w-2/3">

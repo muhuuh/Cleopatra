@@ -15,7 +15,8 @@ const MainLandingPage = () => {
   const { httpState: httpState_refresh, sendRequest: refreshList } = useHttp();
   const dispatch = useDispatch();
   //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
-  const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items";
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items/";
+  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
 
   useEffect(() => {
     const transformData = (data) => {
@@ -23,14 +24,14 @@ const MainLandingPage = () => {
       const loadedTasks = [];
       for (const index in data) {
         loadedTasks.push({
-          id: data[index].list_id,
-          name: data[index].title,
+          list_id: data[index].list_id,
+          title: data[index].title,
           category: "add_category",
-          owner: data[index].creator,
+          creator: data[index].creator,
           items: data[index].listitem_mapping,
           users: "add_users",
-          shortDescription: data[index].description,
-          description: data[index].notes,
+          description: data[index].description,
+          notes: data[index].notes,
           has_collaborators: data[index].has_collaborators,
           is_public: data[index].is_public,
           list_image: data[index].list_image,
@@ -44,9 +45,10 @@ const MainLandingPage = () => {
       let fetchedItems = [];
       for (let i in loadedTasks) {
         for (let j in loadedTasks[i].items) {
-          fetchedItems.push(loadedTasks[i].items[j].listitem);
+          fetchedItems.push(loadedTasks[i].items[j]);
         }
       }
+
       console.log("fetchedItems");
       console.log(fetchedItems);
       dispatch(itemActions.getItemFromFetchedList(fetchedItems));
@@ -91,38 +93,35 @@ const MainLandingPage = () => {
   }, [fetchTasks]);
   */
 
-  /*
   const onRemoveHandler = () => {
-    
-    console.log("removing")
-    console.log(listsStore)
+    console.log("removing");
+    console.log(listsStore);
     const postConfig = {
-      url: "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json",
+      url: url,
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: { lists: listsStore.lists, items: itemsStore.items },
     };
 
     const transformDataPost = (data) => {
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
+      const generatedId = data; // firebase-specific => "name" contains generated id
       const createdTask = { id: generatedId, text: itemsStore };
     };
 
     refreshList(postConfig, transformDataPost);
-    console.log("after removed")
-  }
-  */
+    console.log("after removed");
+  };
 
   //list from the api fetch
   const listItems = listsStore.lists.map((list) => (
     <ListSummary
-      key={list.id}
-      id={list.id}
-      name={list.name}
-      owner={list.owner.username}
-      shortDescription={list.shortDescription}
+      key={list.list_id}
+      list_id={list.list_id}
+      title={list.title}
+      owner={list.creator.username}
+      description={list.description}
       items={list.items}
-      //onRemove={onRemoveHandler}
+      onRemove={onRemoveHandler}
     />
   ));
 

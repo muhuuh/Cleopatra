@@ -1,9 +1,15 @@
 import useInput from "../../../hooks/use-input";
 import Modal from "../../UI/Modal";
+import useHttp from "../../../hooks/use-http";
+import { useDispatch } from "react-redux";
+import { listActions } from "../../store/list-slice";
+import { useState } from "react";
 
 const CreateListInput = (props) => {
-
-
+  const { httpState, sendRequest: postLists } = useHttp();
+  const dispatch = useDispatch();
+  const url = "https://cleolist.herokuapp.com/listapi/v1/lists/";
+  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
   const checkValidity = (input) => {
     return input.trim() !== "";
   };
@@ -25,14 +31,14 @@ const CreateListInput = (props) => {
     ? "form-control invalid"
     : "form-control";
 
-  let randomId = Math.random().toString().replace(".","");
+  //let randomId = Math.random().toString().replace(".", "");
 
   const newList = {
-    id: randomId,
-    name: nameInput.enteredInput,
+    id: "random_id",
+    title: nameInput.enteredInput,
     category: categoryInput.enteredInput,
-    shortDescription: shortDescriptionInput.enteredInput,
-    description: descriptionInput.enteredInput,
+    description: shortDescriptionInput.enteredInput,
+    notes: descriptionInput.enteredInput,
     lists: [],
   };
 
@@ -53,8 +59,39 @@ const CreateListInput = (props) => {
       return;
     }
 
-    //dispatch(listActions.createList(newList));
-    props.onNewList(newList);
+    const newListAttribute = {
+      title: newList.title,
+      creator: 1,
+      description: newList.description,
+      notes: newList.notes,
+      //is_public: "add is_public",
+      //list_image: "add list_image",
+    };
+
+    const postConfig = {
+      url: url,
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      //body: { lists: newListAttribute },
+      body: newListAttribute,
+    };
+
+    const transformDataPost = (data) => {
+      const receivedData = data;
+      const createdTask = { data: receivedData, text: newListAttribute };
+
+      //update newList state with the new list and the new id, created date and modification ate
+      //crate the list ("newEmptyList") with all the attributes as we need it and with empty item array
+      const updatedReceivedData = { ...receivedData, users: [], items: [] };
+      console.log("updatedReceivedData");
+      console.log(updatedReceivedData);
+      props.onNewList(updatedReceivedData);
+      dispatch(listActions.addList(updatedReceivedData));
+    };
+
+    postLists(postConfig, transformDataPost);
+
+    //props.onNewList(newList);
 
     nameInput.resetInput();
     categoryInput.resetInput();
