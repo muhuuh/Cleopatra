@@ -11,49 +11,53 @@ import Signing from "./components/Pages/SignIn/Signing";
 import Login from "./components/Pages/SignIn/Login";
 import NotFound from "./components/Pages/NotFound";
 import Test from "./components/Pages/Test";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
-    <div className="container mx-auto">
+    <div className="box-border">
       <Header />
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/main_landing_page" />
-        </Route>
-        <Route path="/main_landing_page">
-          <MainLandingPage />
-        </Route>
-        <Route path="/lists" exact>
-          <ListOverview />
-        </Route>
-        <Route path="/lists/detailpage/:listId">
-          <ListDetailPage />
-        </Route>
-        <Route path="/lists/create">
-          <CreateList />
-        </Route>
-        <Route path="/items" exact>
-          <ItemDetailPages />
-        </Route>
-        <Route path="/items/create">
-          <CreateItem />
-        </Route>
-        <Route path="/my_profil">
-          <MyProfil />
-        </Route>
-        <Route path="/signup">
-          <Signing />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/test">
-          <Test />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
+      <div className="">
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/main_landing_page" />
+          </Route>
+          <Route path="/main_landing_page">
+            <MainLandingPage />
+          </Route>
+          <Route path="/lists" exact>
+            <ListOverview />
+          </Route>
+          <Route path="/lists/detailpage/:listId">
+            <ListDetailPage />
+          </Route>
+          <Route path="/lists/create">
+            <CreateList />
+          </Route>
+          <Route path="/items" exact>
+            <ItemDetailPages />
+          </Route>
+          <Route path="/items/create">
+            <CreateItem />
+          </Route>
+          <Route path="/my_profil">
+            <MyProfil />
+          </Route>
+          <Route path="/signup">
+            <Signing />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/test">
+            <Test />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </div>
+      <Footer />
     </div>
   );
 };

@@ -41,9 +41,9 @@ const ListDetailPage = () => {
   ));
 
   return (
-    <div className="flex flex-col justify-center items-center ">
+    <div className="flex flex-col bg-green-500 justify-center ">
       <h1 className="text-xl font-bold mb-8">List Detail Page</h1>
-      <div className="text-center w-2/3">
+      <div className="">
         <div className="">Name: {existingList.title}</div>
         <div className="mb-6 ">By: {existingList.creator.username}</div>
 
@@ -52,7 +52,9 @@ const ListDetailPage = () => {
           <div className="mb-2">{existingList.short_description}</div>
           <div>{existingList.description}</div>
         </div>
-        <div className="flex flex-col gap-y-4 mt-12"> {listOfItems}</div>
+      </div>
+      <div className="flex flex-col bg-red-500 gap-y-4 mt-12">
+        {listOfItems}
       </div>
     </div>
   );
