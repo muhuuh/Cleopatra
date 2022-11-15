@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { itemActions } from "../../store/item-slice";
 import { listActions } from "../../store/list-slice";
+import ItemMenuDropdown from "../../UI/Dropdown/ItemMenuDropdown";
+import MoreIcon from "../../UI/Icons/MoreIcon";
 
 const ListItemPage = (props) => {
   const dispatch = useDispatch();
@@ -14,6 +16,7 @@ const ListItemPage = (props) => {
   console.log(currentList);
 
   const onRemove = () => {
+    console.log("remove button");
     dispatch(itemActions.deleteItem(props.id));
     const itemsInCurrentList = currentList[0].items;
     const notRemovedItems = itemsInCurrentList.filter(
@@ -28,13 +31,15 @@ const ListItemPage = (props) => {
   };
 
   return (
-    <div className="flex flex-row justify-between border-2 rounded-md shadow-lg h-24">
+    <div className="flex flex-row justify-between items-center border-2 rounded-md shadow-lg h-24">
       <div className="w-24 bg-red-500">Image</div>
       <div className=" text-center">{props.item_name}</div>
       <div className="text-center">{props.item_description}</div>
       <div className="text-center">{props.item_notes}</div>
       <div className="text-center">{props.hyperlink}</div>
-      <button onClick={onRemove}>Remove</button>
+      <div>
+        <ItemMenuDropdown onRemove={onRemove} />
+      </div>
     </div>
   );
 };

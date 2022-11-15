@@ -19,6 +19,7 @@ module.exports = {
         darkRed: "RGB(205,5,5)",
         brownRed: "RGB(185, 39, 13)",
         brown: "RGB(128,25,7)",
+        brownGoldish: "rgb(216, 117, 0)",
         darkBrown: "RGB(109,16,7)",
         grayishBlue: "RGB(82,99,203)",
         darkBlue: "hsl(228, 39%, 23%)",
