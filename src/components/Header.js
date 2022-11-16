@@ -1,9 +1,8 @@
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
-
   return (
-    <div className="flex flex-row justify-between bg-teal-500 text-white font-bold py-6 px-12 mb-10">
+    <div className="flex flex-row justify-between bg-teal-500 text-white font-bold py-6 px-12">
       <div className="text-3xl">Cleaopatra</div>
       <div className="flex flex-row justify-center gap-x-6 ">
         <NavLink

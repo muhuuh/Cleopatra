@@ -31,7 +31,7 @@ const ListItemPage = (props) => {
   };
 
   return (
-    <div className="flex flex-row justify-between items-center border-2 rounded-md shadow-lg h-24">
+    <div className="flex flex-row justify-between items-center bg-white border-2 rounded-md shadow-lg h-24">
       <div className="w-24 bg-red-500">Image</div>
       <div className=" text-center">{props.item_name}</div>
       <div className="text-center">{props.item_description}</div>

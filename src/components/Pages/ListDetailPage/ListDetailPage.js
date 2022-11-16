@@ -1,17 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import DropdownIcon from "../../UI/Icons/DropdownIcon";
 import ListItemPage from "./ListItemPage";
 
 const ListDetailPage = () => {
   const params = useParams();
   const listsStore = useSelector((state) => state.lists);
-  const itemsStore = useSelector((state) => state.items);
-
-  console.log("itemsStore");
-  console.log(itemsStore);
-  console.log("listsStore");
-  console.log(listsStore);
+  const [showDetails, setShowDetails] = useState(false);
 
   //add a fecthing of the list id based on params, in cased listStore is empty (sharing the url link directly without first going from main_landing_page)
 
@@ -19,14 +16,17 @@ const ListDetailPage = () => {
   const existingList = listsStore.lists.find(
     (list) => list.list_id == currentId
   );
-
   const itemsInList = existingList.items;
+  console.log("existingList");
+  console.log(existingList);
 
-  /*
-  const itemsInList = itemsStore.items.filter((item) =>
-    existingList.items.includes(item.list_item_id)
-  );
-  */
+  const creationDate = `${new Date(
+    existingList.creation_date
+  ).getDate()} / ${new Date(
+    existingList.creation_date
+  ).getMonth()} / ${new Date(existingList.creation_date).getFullYear()} `;
+  console.log("creationDate");
+  console.log(creationDate);
 
   const listOfItems = itemsInList.map((item) => (
     <ListItemPage
@@ -40,20 +40,31 @@ const ListDetailPage = () => {
     />
   ));
 
-  return (
-    <div className="flex flex-col justify-center ">
-      <h1 className="text-xl font-bold mb-8">List Detail Page</h1>
-      <div className="">
-        <div className="">Name: {existingList.title}</div>
-        <div className="mb-6 ">By: {existingList.creator.username}</div>
+  const onClickHandler = () => {
+    setShowDetails(!showDetails);
+  };
 
-        <div className="font-lg font-bold mb-4">Description</div>
-        <div>
-          <div className="mb-2">{existingList.short_description}</div>
-          <div>{existingList.description}</div>
+  return (
+    <div className="flex flex-col h-screen bg-lightBlueishGray">
+      <div className="bg-gradient-to-b from-blueishIndigo to-darkBlueishBlack text-white text-center pt-6">
+        <div className="mb-2 text-xl">{existingList.title}</div>
+        <div className="flex flex-row justify-center mb-6">
+          <div className="grow">By: {existingList.creator.username}</div>
+          <button onClick={onClickHandler}>
+            <DropdownIcon />
+          </button>
         </div>
+
+        {showDetails && (
+          <div>
+            <div className="mb-2">Category: {existingList.category}</div>
+            <div className="mb-2">Description: {existingList.description}</div>
+            <div className="mb-2 italic">Notes: {existingList.notes}</div>
+            <div className="mb-2 text-sm">Creation: {creationDate}</div>
+          </div>
+        )}
       </div>
-      <div className="flex flex-col gap-y-4 mt-12">{listOfItems}</div>
+      <div className="flex flex-col gap-y-4 mt-4">{listOfItems}</div>
     </div>
   );
 };

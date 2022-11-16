@@ -15,7 +15,7 @@ import Footer from "./components/Footer";
 
 const App = () => {
   return (
-    <div className="box-border">
+    <div className="box-border h-screen">
       <Header />
       <div className="">
         <Switch>

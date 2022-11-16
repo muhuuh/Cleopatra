@@ -42,9 +42,6 @@ const Footer = () => {
       <NavLink to="/signup" className="text-xl hover:underline hover:scale-110">
         <ShareIcon />
       </NavLink>
-      <NavLink to="/signup" className="text-xl hover:underline hover:scale-110">
-        <MoreIcon />
-      </NavLink>
     </div>
   );
 };
