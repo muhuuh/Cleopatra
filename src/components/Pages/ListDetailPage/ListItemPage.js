@@ -30,15 +30,26 @@ const ListItemPage = (props) => {
     dispatch(listActions.updateList(currentList));
   };
 
+  const displayedItem = {
+    key: props.key,
+    id: props.id,
+    item_name: props.item_name,
+    item_notes: props.item_notes,
+    item_description: props.item_description,
+    hyperlink: props.hyperlink,
+  };
+
+  //TODO show the detailpage of the displayed item when we click on "see detials" of the menudropdown
+
   return (
     <div className="flex flex-row justify-between items-center bg-white border-2 rounded-md shadow-lg h-24">
       <div className="w-24 bg-red-500">Image</div>
-      <div className=" text-center">{props.item_name}</div>
-      <div className="text-center">{props.item_description}</div>
-      <div className="text-center">{props.item_notes}</div>
-      <div className="text-center">{props.hyperlink}</div>
+      <div className="">
+        <div className="text-center text-lg">{displayedItem.item_name}</div>
+        <div className="text-center italic">{displayedItem.item_notes}</div>
+      </div>
       <div>
-        <ItemMenuDropdown onRemove={onRemove} />
+        <ItemMenuDropdown onRemove={onRemove} displayedItem={displayedItem} />
       </div>
     </div>
   );

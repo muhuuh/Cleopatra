@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import DropdownIcon from "../../UI/Icons/DropdownIcon";
+import PlusIcon from "../../UI/Icons/PlusIcon";
 import ListItemPage from "./ListItemPage";
 
 const ListDetailPage = () => {
@@ -45,7 +46,7 @@ const ListDetailPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-lightBlueishGray">
+    <div className="flex flex-col bg-lightBlueishGray">
       <div className="bg-gradient-to-b from-blueishIndigo to-darkBlueishBlack text-white text-center pt-6">
         <div className="mb-2 text-xl">{existingList.title}</div>
         <div className="flex flex-row justify-center mb-6">
@@ -64,7 +65,14 @@ const ListDetailPage = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-y-4 mt-4">{listOfItems}</div>
+      <div className="flex flex-col gap-y-2 h-screen mt-4 mb-32">
+        {listOfItems}
+      </div>
+      <div className="fixed z-10 bottom-36 right-8">
+        <NavLink to="/lists/create" className="hover:underline hover:scale-110">
+          <PlusIcon />
+        </NavLink>
+      </div>
     </div>
   );
 };

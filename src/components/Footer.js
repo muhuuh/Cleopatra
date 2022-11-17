@@ -9,18 +9,18 @@ import MoreIcon from "./UI/Icons/MoreIcon";
 const Footer = () => {
   //TODO change to NavLink links
   return (
-    <div className="flex flex-row justify-between items-center gap-x-6 fixed bottom-0 left-0 right-0 bg-gray-200 py-6 px-12">
+    <div className="flex flex-row justify-between items-center gap-x-6 fixed z-10 bottom-0 left-0 right-0 bg-gray-200 py-6 px-12">
       <NavLink
         to="/main_landing_page"
         activeClassName="underline"
-        className="text-xl hover:underline hover:scale-110"
+        className="hover:underline hover:scale-110"
       >
         <HomeIcon />
       </NavLink>
       <NavLink
         to="/lists/create"
         activeClassName="underline"
-        className="text-xl hover:underline hover:scale-110"
+        className="hover:underline hover:scale-110"
       >
         <Magnifier />
       </NavLink>
@@ -28,15 +28,12 @@ const Footer = () => {
         <NavLink
           to="/main_landing_page"
           activeClassName="underline"
-          className="text-xl scale-110 hover:underline hover:scale-125"
+          className="scale-110 hover:underline hover:scale-125"
         >
           <MenuIcon />
         </NavLink>
       </div>
-      <NavLink
-        to="/my_profil"
-        className="text-xl hover:underline hover:scale-110"
-      >
+      <NavLink to="/my_profil" className="hover:underline hover:scale-110">
         <UserIcon />
       </NavLink>
       <NavLink to="/signup" className="text-xl hover:underline hover:scale-110">
