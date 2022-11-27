@@ -65,7 +65,7 @@ const ListDetailPage = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-y-2 h-screen mt-4 mb-32">
+      <div className="flex flex-col gap-y-2 h-screen mt-2 mb-32">
         {listOfItems}
       </div>
       <div className="fixed z-10 bottom-36 right-8">

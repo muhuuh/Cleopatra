@@ -8,7 +8,7 @@ const ListSummary = (props) => {
 
   const onRemoveHandler = () => {
     dispatch(listActions.deleteList(props.list_id));
-    //props.onRemove();
+    props.onRemove(props.list_id);
   };
 
   return (

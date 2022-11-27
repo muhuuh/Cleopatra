@@ -12,11 +12,11 @@ const MainLandingPage = () => {
   const itemsStore = useSelector((state) => state.items);
   const [tasks, setTasks] = useState([]);
   const { httpState: httpState_fetch, sendRequest: fetchTasks } = useHttp();
-  const { httpState: httpState_refresh, sendRequest: refreshList } = useHttp();
+  const { httpState: httpState_delete, sendRequest: deleteList } = useHttp();
   const dispatch = useDispatch();
-  //const url = "https://react-udemy-movie-e7f18-default-rtdb.europe-west1.firebasedatabase.app/cleopatra.json"
-  const url = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items/";
-  //const url = "http://192.168.0.206:8000/listapi/v1/lists/";
+
+  const urlGet = "https://cleolist.herokuapp.com/listapi/v1/lists_with_items/";
+  let urlDelete = "https://cleolist.herokuapp.com/listapi/v1/delete_list/";
 
   useEffect(() => {
     const transformData = (data) => {
@@ -56,7 +56,7 @@ const MainLandingPage = () => {
 
     fetchTasks(
       {
-        url: url,
+        url: urlGet,
       },
       transformData
     );
@@ -93,14 +93,16 @@ const MainLandingPage = () => {
   }, [fetchTasks]);
   */
 
-  const onRemoveHandler = () => {
+  const onRemoveHandler = (list_id) => {
     console.log("removing");
-    console.log(listsStore);
+    urlDelete = urlDelete + `${list_id}`;
+    console.log("urlDelete");
+    console.log(urlDelete);
     const postConfig = {
-      url: url,
-      method: "PUT",
+      url: urlDelete,
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: { lists: listsStore.lists, items: itemsStore.items },
+      //body: { list_id: list_id },
     };
 
     const transformDataPost = (data) => {
@@ -108,7 +110,7 @@ const MainLandingPage = () => {
       const createdTask = { id: generatedId, text: itemsStore };
     };
 
-    refreshList(postConfig, transformDataPost);
+    deleteList(postConfig, transformDataPost);
     console.log("after removed");
   };
 
@@ -133,11 +135,11 @@ const MainLandingPage = () => {
     );
   }
 
-  if (httpState_refresh.status === "error") {
-    return <div className="flex justify-center">{httpState_refresh.error}</div>;
+  if (httpState_delete.status === "error") {
+    return <div className="flex justify-center">{httpState_delete.error}</div>;
   }
 
-  console.log(httpState_refresh.status);
+  console.log(httpState_delete.status);
 
   return (
     <div className="mx-16">
