@@ -94,10 +94,7 @@ const MainLandingPage = () => {
   */
 
   const onRemoveHandler = (list_id) => {
-    console.log("removing");
     urlDelete = urlDelete + `${list_id}`;
-    console.log("urlDelete");
-    console.log(urlDelete);
     const postConfig = {
       url: urlDelete,
       method: "POST",
